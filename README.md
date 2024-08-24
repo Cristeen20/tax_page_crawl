@@ -1,5 +1,7 @@
-# Run python app.py
-# pip install -r requirements.txt
+# Run 
+pip install -r requirements.txt
+python app.py
+
 # API sample 
   # http://localhost/api/get_function
   Body JSON:
