@@ -8,7 +8,9 @@ async def arkansas_automate(certification_num,tax_payer=None,zipcode=None,dba_na
 
     url = 'https://atap.arkansas.gov/_/'    
 
-    browser = await launch(headless=False)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto(url)
     print("launch")
@@ -46,6 +48,7 @@ async def arkansas_automate(certification_num,tax_payer=None,zipcode=None,dba_na
     print(span_content)
 
     await browser.close()
+    return span_content
 
 
 #asyncio.get_event_loop().run_until_complete(arkansas_automate(certification_num))

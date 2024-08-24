@@ -8,7 +8,9 @@ certification_num = "00000000000"
 
 async def colorado_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
     
-    browser = await launch(headless=False)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto('https://www.colorado.gov/revenueonline/_/')
     print("launch")
@@ -40,6 +42,7 @@ async def colorado_automate(certification_num,tax_payer=None,zipcode=None,dba_na
     print(span_content)
 
     await browser.close()
+    return span_content
 
 
 #asyncio.get_event_loop().run_until_complete(colorado_automate(certification_num))

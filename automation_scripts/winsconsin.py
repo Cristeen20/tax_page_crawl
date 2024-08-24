@@ -13,7 +13,9 @@ zipcode = "90909"
 async def wisconsin_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
 
     
-    browser = await launch(headless=False)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto('https://tap.revenue.wi.gov/mta/')
     print("launch")
@@ -79,6 +81,7 @@ async def wisconsin_automate(certification_num,tax_payer=None,zipcode=None,dba_n
     print(span_content)
 
     await browser.close()
+    return span_content
     
 
 

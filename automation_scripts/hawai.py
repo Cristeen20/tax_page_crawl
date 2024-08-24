@@ -10,7 +10,9 @@ tax_payer = "bussiness"
 dba_name = "hjhjhj"
 
 async def hawai_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
-    browser = await launch(headless=False)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto('https://hitax.hawaii.gov/?Link=LicenseSearch')
 
@@ -49,6 +51,7 @@ async def hawai_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
     
 
     await browser.close()
+    return span_content
     
 
 #asyncio.get_event_loop().run_until_complete(hawai_automate(certification_num,tax_payer,dba_name))

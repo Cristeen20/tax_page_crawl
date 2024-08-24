@@ -10,7 +10,9 @@ async def georgia_automate(certification_num,tax_payer=None,zipcode=None,dba_nam
 
     url = 'https://gtc.dor.ga.gov/_/'
 
-    browser = await launch(headless=False)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage(url)
     await page.goto()
     print("launch")
@@ -51,6 +53,7 @@ async def georgia_automate(certification_num,tax_payer=None,zipcode=None,dba_nam
     print(span_content)
 
     await browser.close()
+    return span_content
 
 
 #asyncio.get_event_loop().run_until_complete(georgia_automate(certification_num))

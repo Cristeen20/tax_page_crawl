@@ -11,7 +11,9 @@ async def illinois_automate(certification_num,tax_payer=None,zipcode=None,dba_na
 
     #https://www.ascdi.com/verifyresalecertificate/
     
-    browser = await launch()
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto('https://www.revenue.state.il.us/app/bgii/servlet/BGIInquiry')
     print("launch")
@@ -47,10 +49,8 @@ async def illinois_automate(certification_num,tax_payer=None,zipcode=None,dba_na
     print(span_content)
 
 
-
-    
-    
     await browser.close()
+    return span_content
     
 
 

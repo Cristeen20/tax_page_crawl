@@ -8,7 +8,9 @@ from pyppeteer import launch
 certification_num = "32083750854"
 
 async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
-    browser = await launch()
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto('https://mycpa.cpa.state.tx.us/staxpayersearch/')
 
@@ -38,6 +40,7 @@ async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
 
     
     await browser.close()
+    return span_content
     
 
 

@@ -13,7 +13,9 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
 
     url = 'https://revenue.maine.gov/_/'
 
-    browser = await launch(headless=False)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto(url)
     print("launch")
@@ -61,6 +63,7 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
     print(span_content)
 
     await browser.close()
+    return span_content
 
 
 #asyncio.get_event_loop().run_until_complete(maine_automate(certification_num,account_id))

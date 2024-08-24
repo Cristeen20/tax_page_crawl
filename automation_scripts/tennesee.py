@@ -11,7 +11,9 @@ async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_na
 
     url = 'https://tntap.tn.gov/eservices/_/'
 
-    browser = await launch(headless=False)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto(url)
     print("launch")
@@ -55,6 +57,7 @@ async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_na
     print(span_content)
 
     await browser.close()
+    return span_content
     
 
 

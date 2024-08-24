@@ -12,7 +12,9 @@ certification_num = "00000001"
 async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
 
     
-    browser = await launch(headless=False)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto('https://tap.dor.ms.gov/_/')
     print("launch")
@@ -48,11 +50,11 @@ async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_
     await page.waitForSelector(f'.{span_id}')
     span_content = await page.evaluate(f'document.querySelector(".{span_id}").innerText')
     print(span_content)
-    await page.screenshot({'path': 'example.png'})
+    #await page.screenshot({'path': 'example.png'})
 
-    
-    
+
     await browser.close()
+    return span_content
     
 
 

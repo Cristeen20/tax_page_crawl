@@ -10,7 +10,9 @@ from pyppeteer import launch
 certification_num = "000000000"
 
 async def california_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
-    browser = await launch()
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto('https://onlineservices.cdtfa.ca.gov/_/#1')
 
@@ -41,7 +43,9 @@ async def california_automate(certification_num,tax_payer=None,zipcode=None,dba_
     span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
     print(span_content)
     
+    
     await browser.close()
+    return span_content
     
 
 

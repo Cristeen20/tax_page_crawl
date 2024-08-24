@@ -10,7 +10,9 @@ async def idaho_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
 
     url = 'https://idahotap.gentax.com/TAP/_/'
     
-    browser = await launch(headless=False)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto(url)
     print("launch")
@@ -47,6 +49,7 @@ async def idaho_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
     print(span_content)
 
     await browser.close()
+    return span_content
     
 
 

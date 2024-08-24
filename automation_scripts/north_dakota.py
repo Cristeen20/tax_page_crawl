@@ -12,7 +12,9 @@ certification_num = "09999999999"
 async def north_dakota_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
 
     
-    browser = await launch(headless=True)
+    browser = await launch(handleSIGINT=False,
+                            handleSIGTERM=False,
+                            handleSIGHUP=False)
     page = await browser.newPage()
     await page.goto('https://apps.nd.gov/tax/tap/')
     print("launch")
@@ -48,6 +50,7 @@ async def north_dakota_automate(certification_num,tax_payer=None,zipcode=None,db
     print(span_content)
 
     await browser.close()
+    return span_content
     
 
 

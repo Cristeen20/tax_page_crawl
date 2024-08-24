@@ -45,8 +45,10 @@ def get_function():
     account_id = data.get("account_id")
 
     function_name = function_set[state_name]
-    asyncio.get_event_loop().run_until_complete(function_name(certification_num,tax_payer,zipcode,dba_name,account_id))
 
+    asyncio.set_event_loop(asyncio.SelectorEventLoop())
+    res = asyncio.get_event_loop().run_until_complete(function_name(certification_num,tax_payer,zipcode,dba_name,account_id))
+    return res
 
 # Run the app
 if __name__ == '__main__':
