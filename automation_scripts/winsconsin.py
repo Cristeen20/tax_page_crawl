@@ -7,7 +7,7 @@ import asyncio
 from pyppeteer import launch
 
 certification_num = "99-9090909"
-last_name = "bussiness"
+tax_payer = "bussiness"
 zipcode = "90909"
 
 async def wisconsin_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
