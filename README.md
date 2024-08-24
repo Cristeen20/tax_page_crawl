@@ -19,4 +19,6 @@ python app.py
     "dba_name": "Doe Enterprises",
     "account_id": "ACC12345"
 }
+
+
 Note: Variable samples for each state is provided in corresponding scripts.
