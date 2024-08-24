@@ -4,7 +4,7 @@ pip install -r requirements.txt
 python app.py
 
 # API sample 
-  # [http://localhost/api/get_function](http://127.0.0.1:5000/api/get_function)
+  (http://127.0.0.1:5000/api/get_function)
   Body JSON:
   {
     "state_name": "california",
