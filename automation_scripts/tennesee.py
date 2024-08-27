@@ -7,6 +7,12 @@ from pyppeteer import launch
 
 certification_num = "000000000"
 
+def output_handle(response):
+    if "no" in response.lower():
+        return "Invalid"
+    else:
+        return "Valid"
+
 async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
 
     url = 'https://tntap.tn.gov/eservices/_/'
@@ -57,7 +63,10 @@ async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_na
     print(span_content)
 
     await browser.close()
-    return span_content
+    res = output_handle(span_content)
+    return {
+            "result":res
+        }
     
 
 

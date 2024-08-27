@@ -9,6 +9,12 @@ from pyppeteer import launch
 
 certification_num = "000000000"
 
+def output_handle(response):
+    if "invalid" in response.lower():
+        return "Invalid"
+    else:
+        return "Valid"
+
 async def california_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
@@ -45,7 +51,10 @@ async def california_automate(certification_num,tax_payer=None,zipcode=None,dba_
     
     
     await browser.close()
-    return span_content
+    res = output_handle(span_content)
+    return {
+            "result":res
+        }
     
 
 

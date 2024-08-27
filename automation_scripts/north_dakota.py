@@ -9,6 +9,12 @@ from pyppeteer import launch
 
 certification_num = "09999999999"
 
+def output_handle(response):
+    if "not" in response.lower():
+        return "Invalid"
+    else:
+        return "Valid"
+
 async def north_dakota_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
 
     
@@ -50,7 +56,11 @@ async def north_dakota_automate(certification_num,tax_payer=None,zipcode=None,db
     print(span_content)
 
     await browser.close()
-    return span_content
+    res = output_handle(span_content)
+    return {
+            "result":res
+        }
+    
     
 
 

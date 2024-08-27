@@ -9,12 +9,19 @@ from pyppeteer import launch
 
 certification_num = "00000001"
 
+def output_handle(response):
+    if "invalid" in response.lower():
+        return "Invalid"
+    else:
+        return "Valid"
+
 async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
 
     
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
-                            handleSIGHUP=False)
+                            handleSIGHUP=False,
+                            headless=False)
     page = await browser.newPage()
     await page.goto('https://tap.dor.ms.gov/_/')
     print("launch")
@@ -51,10 +58,13 @@ async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_
     span_content = await page.evaluate(f'document.querySelector(".{span_id}").innerText')
     print(span_content)
     #await page.screenshot({'path': 'example.png'})
-
+    await asyncio.sleep(10) #fix needed
 
     await browser.close()
-    return span_content
+    res = output_handle(span_content)
+    return {
+            "result":res
+        }
     
 
 

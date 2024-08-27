@@ -8,6 +8,11 @@ from pyppeteer import launch
 certification_num = "0000000"
 account_id = "9999-9999"
 
+def output_handle(response):
+    if "please enter" in response.lower():
+        return "Invalid"
+    else:
+        return "Valid"
 
 async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
     try:
@@ -15,7 +20,8 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
 
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
-                                handleSIGHUP=False)
+                                handleSIGHUP=False,
+                                headless=True)
         page = await browser.newPage()
         await page.goto(url)
         print("launch")
@@ -62,8 +68,14 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         span_content = await page.evaluate(f'document.querySelector(".{span_id}").innerText')
         print(span_content)
 
+        
         await browser.close()
-        return span_content
+
+        res = output_handle(span_content)
+        return {
+            "result":res
+        }
+
     
     except Exception as e:
         return str({"Required values" : "certification_num, account_id",

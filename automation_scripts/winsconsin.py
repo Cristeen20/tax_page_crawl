@@ -10,6 +10,12 @@ certification_num = "99-9090909"
 tax_payer = "bussiness"
 zipcode = "90909"
 
+def output_handle(response):
+    if "invalid" in response.lower():
+        return "Invalid"
+    else:
+        return "Valid"
+
 async def wisconsin_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
 
     try:
@@ -81,7 +87,10 @@ async def wisconsin_automate(certification_num,tax_payer=None,zipcode=None,dba_n
         print(span_content)
 
         await browser.close()
-        return span_content
+        res = output_handle(span_content)
+        return {
+            "result":res
+        }
 
     except Exception as e:
         return str({"Required values" : "certification_num, tax_payer, zipcode",

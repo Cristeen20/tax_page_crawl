@@ -9,6 +9,13 @@ certification_num = "T-889-999-9999"
 tax_payer = "bussiness"
 dba_name = "hjhjhj"
 
+
+def output_handle(response):
+    if "no" in response.lower():
+        return "Invalid"
+    else:
+        return "Valid"
+
 async def hawai_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
     try:
         browser = await launch(handleSIGINT=False,
@@ -43,16 +50,22 @@ async def hawai_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         await page.click(f'#{element_id}')
         await asyncio.sleep(1)
 
-        
-        span_id = "caption2_Dj-f"
-        #span_id = "CTE CaptionLabel"
-        await page.waitForSelector(f'#{span_id}')
-        span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
-        print(span_content)
-        
+        try:
+            span_id = "caption2_Dj-f"
+            #span_id = "CTE CaptionLabel"
+            await page.waitForSelector(f'#{span_id}')
+            span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
+            print(span_content)
+        except:
+            span_content = "valid"
 
         await browser.close()
-        return span_content
+
+        res = output_handle(span_content)
+        
+        return {
+            "result":res
+        }
     
     except Exception as e:
         return str({"Required values" : "certification_num, tax_payer, dba_name",

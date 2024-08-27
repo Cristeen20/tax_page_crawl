@@ -6,6 +6,12 @@ from pyppeteer import launch
 
 certification_num = "00000000000000"
 
+def output_handle(response):
+    if "inactive" in response.lower():
+        return "Invalid"
+    else:
+        return "Valid"
+
 async def georgia_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
 
     url = 'https://gtc.dor.ga.gov/_/'
@@ -13,8 +19,8 @@ async def georgia_automate(certification_num,tax_payer=None,zipcode=None,dba_nam
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
                             handleSIGHUP=False)
-    page = await browser.newPage(url)
-    await page.goto()
+    page = await browser.newPage()
+    await page.goto(url)
     print("launch")
     await asyncio.sleep(1)
 
@@ -53,7 +59,10 @@ async def georgia_automate(certification_num,tax_payer=None,zipcode=None,dba_nam
     print(span_content)
 
     await browser.close()
-    return span_content
+    res = output_handle(span_content)
+    return {
+            "result":res
+        }
 
 
 #asyncio.get_event_loop().run_until_complete(georgia_automate(certification_num))
