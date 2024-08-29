@@ -12,7 +12,7 @@ def output_handle(response):
     else:
         return "Valid"
 
-async def georgia_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
+async def georgia_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None,buyer_acc=None,buyer_name=None):
 
     url = 'https://gtc.dor.ga.gov/_/'
 

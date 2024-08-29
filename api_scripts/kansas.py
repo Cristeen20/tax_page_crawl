@@ -1,10 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
 
-def kansas_api(sTaxAcctNum):
+
+def output_handle(response):
+    if "invalid" in response.lower():
+        return "Invalid"
+    else:
+        return "Valid"
+
+def kansas_api(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None,buyer_acc=None,buyer_name=None):
     url = "https://www.kdor.ks.gov/Apps/Misc/Miscellaneous/CertDefaultCheckRegNum"
     form_data = {
-        'sTaxAcctNum': {sTaxAcctNum}
+        'sTaxAcctNum': {certification_num}
     }
 
     response = requests.post(url, data=form_data)
@@ -17,9 +24,14 @@ def kansas_api(sTaxAcctNum):
     if error_message:
         print("Error Message:", error_message.get_text(strip=True))
         res = error_message.get_text(strip=True)
-        return res
+
+        res = output_handle(res)
+        return {
+                "result":res
+            }
     else:
         print("No error message found.")
 
-sTaxAcctNum = "000-0000000000-00"
-kansas_api(sTaxAcctNum)
+#sTaxAcctNum = "000-0000000000-00"
+#res = kansas_api(sTaxAcctNum)
+#print(res)

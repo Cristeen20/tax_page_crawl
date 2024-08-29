@@ -13,7 +13,7 @@ def output_handle(response):
     else:
         return "Valid"
 
-async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
+async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None,buyer_acc=None,buyer_name=None):
 
     url = 'https://tntap.tn.gov/eservices/_/'
 

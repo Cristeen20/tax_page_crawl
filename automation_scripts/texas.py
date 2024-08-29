@@ -13,7 +13,7 @@ def output_handle(response):
     else:
         return "Valid"
 
-async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None):
+async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None,buyer_acc=None,buyer_name=None):
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
                             handleSIGHUP=False)

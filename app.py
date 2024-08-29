@@ -12,13 +12,15 @@ from automation_scripts.california import california_automate
 from automation_scripts.illinois import illinois_automate
 from automation_scripts.missisippi import missisippi_automate
 from automation_scripts.texas import texas_automate
+from api_scripts.kansas import kansas_api
+from api_scripts.louisiana import louisiana_api
 
 import asyncio
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-function_set = {"maine":maine_automate,
+automate_function_set = {"maine":maine_automate,
                 "tennesee":tennesee_automate,
                 "idaho":idaho_automate,
                 "georgia":georgia_automate,
@@ -32,23 +34,39 @@ function_set = {"maine":maine_automate,
                 "missisippi":missisippi_automate,
                 "texas":texas_automate
                 }
+api_function_set = {
+                "kansas":kansas_api,
+                "louisiana":louisiana_api
+                }
 
 @app.route('/api/get_function', methods=['POST'])
 def get_function():
 
     data = request.json
+
+
     state_name = data.get("state_name")
     certification_num = data.get("certification_num")
     tax_payer = data.get("tax_payer")
     zipcode = data.get("zipcode")
     dba_name = data.get("dba_name")
     account_id = data.get("account_id")
+    buyer_acc = data.get("buyer_acc")
+    buyer_name = data.get("buyer_name")
 
-    function_name = function_set[state_name]
+    
 
-    asyncio.set_event_loop(asyncio.SelectorEventLoop())
-    res = asyncio.get_event_loop().run_until_complete(function_name(certification_num,tax_payer,zipcode,dba_name,account_id))
-    return res
+    try:
+        function_name = api_function_set[state_name]
+        res = function_name(certification_num,tax_payer,zipcode,dba_name,account_id,buyer_acc,buyer_name)
+        return res
+    except:
+        function_name = automate_function_set[state_name]
+        asyncio.set_event_loop(asyncio.SelectorEventLoop())
+        res = asyncio.get_event_loop().run_until_complete(function_name(certification_num,tax_payer,zipcode,dba_name,account_id,buyer_acc,buyer_name))
+        return res
+
+    
 
 # Run the app
 if __name__ == '__main__':
