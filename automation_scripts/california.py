@@ -10,15 +10,16 @@ from pyppeteer import launch
 certification_num = "000000000"
 
 def output_handle(response):
-    if "invalid" in response.lower():
-        return "Invalid"
-    else:
+    if " valid " in response.lower():
         return "Valid"
+    else:
+        return "Invalid"
 
 async def california_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None,buyer_acc=None,buyer_name=None):
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
-                            handleSIGHUP=False)
+                            handleSIGHUP=False,
+                            headless=True)
     page = await browser.newPage()
     await page.goto('https://onlineservices.cdtfa.ca.gov/_/#1')
 
@@ -39,17 +40,23 @@ async def california_automate(certification_num,tax_payer=None,zipcode=None,dba_
     await page.type(f'#{element_id}', certification_num)
 
 
-    element_id = "d-5"
+    element_id = "d-6"
     await page.waitForSelector(f'#{element_id}')
     await page.click(f'#{element_id}')
+    await page.click(f'#{element_id}')
+
+    try:
+        span_id = "caption2_f-2" 
+        await page.waitForSelector(f'#{span_id}')
+        await asyncio.sleep(1)
+        element = await page.querySelector(f'#{span_id}')
+        span_content = await (await element.getProperty('textContent')).jsonValue()
+        print(f"{span_content}")
+    except Exception as e:
+        print(f"The error is {e}")
+        return {"Error":e}
 
 
-    span_id = "caption2_f-2"
-    await page.waitForSelector(f'#{span_id}')
-    span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
-    print(span_content)
-    
-    
     await browser.close()
     res = output_handle(span_content)
     return {

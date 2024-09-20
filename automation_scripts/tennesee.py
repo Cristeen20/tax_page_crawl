@@ -19,7 +19,8 @@ async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_na
 
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
-                            handleSIGHUP=False)
+                            handleSIGHUP=False,
+                            headless=True)
     page = await browser.newPage()
     await page.goto(url)
     print("launch")
@@ -34,7 +35,7 @@ async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_na
     link_class = "c_Dp-1-6"
     await page.waitForSelector(f'#{link_class}')
     await page.click(f'#{link_class}')
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
 
     element_id_type = "Dd-4"
     val = "SLCCERT"
@@ -55,12 +56,18 @@ async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_na
     element_id_type = "Dd-6"
     a = await page.waitForSelector(f'#{element_id_type}')
     await page.click(f'button#{element_id_type}')
-
-
-    span_id = "caption2_Dd-a"
-    await page.waitForSelector(f'#{span_id}')
-    span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
-    print(span_content)
+    
+    try:
+        span_id = "caption2_Dd-a"
+        await page.waitForSelector(f'#{span_id}')
+        span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
+        print(f"comment : {span_content}")
+        
+    except:
+        span_id = "caption2_Dd-8"
+        await page.waitForSelector(f'#{span_id}')
+        span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
+        print(span_content)
 
     await browser.close()
     res = output_handle(span_content)

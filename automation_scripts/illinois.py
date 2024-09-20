@@ -8,7 +8,7 @@ from pyppeteer import launch
 certification_num = "00000001"
 
 def output_handle(response):
-    if "not" in response.lower():
+    if "not registered" in response.lower():
         return "Invalid"
     else:
         return "Valid"
@@ -19,7 +19,8 @@ async def illinois_automate(certification_num,tax_payer=None,zipcode=None,dba_na
     
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
-                            handleSIGHUP=False)
+                            handleSIGHUP=False,
+                            headless=True)
     page = await browser.newPage()
     await page.goto('https://www.revenue.state.il.us/app/bgii/servlet/BGIInquiry')
     print("launch")

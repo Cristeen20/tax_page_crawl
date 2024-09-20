@@ -21,7 +21,8 @@ async def wisconsin_automate(certification_num,tax_payer=None,zipcode=None,dba_n
     try:
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
-                                handleSIGHUP=False)
+                                handleSIGHUP=False,
+                                headless=True)
         page = await browser.newPage()
         await page.goto('https://tap.revenue.wi.gov/mta/')
         print("launch")

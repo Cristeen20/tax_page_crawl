@@ -25,6 +25,7 @@ async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_
     page = await browser.newPage()
     await page.goto('https://tap.dor.ms.gov/_/')
     print("launch")
+    await asyncio.sleep(2)
 
     button_class = "l_Df-1-13"
     await page.waitForSelector(f'#{button_class}')
@@ -34,10 +35,12 @@ async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_
     
 
     element_id_type = "Dd-4"
-    text = "  Seller's Use Permit"
+    text = "Sales "
     await page.waitForSelector(f'#{element_id_type}')
     await page.type(f'#{element_id_type}', text)
+    
     await page.keyboard.press('Enter')
+    await asyncio.sleep(2)
     
 
     button_class = "Dd-5"
@@ -52,13 +55,14 @@ async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_
     button_id = "Dd-8"
     await page.waitForSelector(f'#{button_id}')
     await page.click(f'#{button_id}')
+    await page.click(f'#{button_id}')
     
-    span_id = "IconCaptionText"
-    await page.waitForSelector(f'.{span_id}')
-    span_content = await page.evaluate(f'document.querySelector(".{span_id}").innerText')
+    span_id = "caption2_Dd-7" #"IconCaptionText"
+    await page.waitForSelector(f'#{span_id}')
+    span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
     print(span_content)
+    await asyncio.sleep(20)
     #await page.screenshot({'path': 'example.png'})
-    await asyncio.sleep(10) #fix needed
 
     await browser.close()
     res = output_handle(span_content)

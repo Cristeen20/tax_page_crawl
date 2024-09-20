@@ -20,48 +20,54 @@ async def hawai_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
     try:
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
-                                handleSIGHUP=False)
+                                handleSIGHUP=False,
+                                headless=True)
         page = await browser.newPage()
         await page.goto('https://hitax.hawaii.gov/?Link=LicenseSearch')
 
 
         #ic_Dh-5
-        element_id = "Dh-5"
+        element_id = "Dg-4" 
         a = await page.waitForSelector(f'#{element_id}')
         await page.type(f'#{element_id}', tax_payer)
 
         #ic_Dh-6
-        element_id = "Dh-6"
+        element_id = "Dg-5"
         await page.waitForSelector(f'#{element_id}')
         await page.type(f'#{element_id}', dba_name)
         
         #ic_Dh-6
-        element_id = "Dh-7"
+        element_id = "Dg-6"
         await page.waitForSelector(f'#{element_id}')
         await page.type(f'#{element_id}', certification_num)
 
         #Dh-8
-        element_id = "Dh-8"
+        element_id = "Dg-7"
         await page.waitForSelector(f'#{element_id}')
         await page.click(f'#{element_id}')
 
-        element_id = "Dh-8"
+        element_id = "Dg-7"
         await page.waitForSelector(f'#{element_id}')
         await page.click(f'#{element_id}')
         await asyncio.sleep(1)
 
         try:
-            span_id = "caption2_Dj-f"
+            span_id = "caption2_Dh-f"
             #span_id = "CTE CaptionLabel"
             await page.waitForSelector(f'#{span_id}')
             span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
             print(span_content)
-        except:
-            span_content = "valid"
+        except Exception as e:
+            #True cases unhandled
+            return {
+                "Error":str(e)
+            }
+        
 
         await browser.close()
 
         res = output_handle(span_content)
+
         
         return {
             "result":res

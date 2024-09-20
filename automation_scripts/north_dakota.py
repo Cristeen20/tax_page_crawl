@@ -20,7 +20,8 @@ async def north_dakota_automate(certification_num,tax_payer=None,zipcode=None,db
     
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
-                            handleSIGHUP=False)
+                            handleSIGHUP=False,
+                            headless=True)
     page = await browser.newPage()
     await page.goto('https://apps.nd.gov/tax/tap/')
     print("launch")

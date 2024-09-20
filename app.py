@@ -44,7 +44,6 @@ def get_function():
 
     data = request.json
 
-
     state_name = data.get("state_name")
     certification_num = data.get("certification_num")
     tax_payer = data.get("tax_payer")
@@ -54,7 +53,6 @@ def get_function():
     buyer_acc = data.get("buyer_acc")
     buyer_name = data.get("buyer_name")
 
-    
 
     try:
         function_name = api_function_set[state_name]
@@ -65,8 +63,6 @@ def get_function():
         asyncio.set_event_loop(asyncio.SelectorEventLoop())
         res = asyncio.get_event_loop().run_until_complete(function_name(certification_num,tax_payer,zipcode,dba_name,account_id,buyer_acc,buyer_name))
         return res
-
-    
 
 # Run the app
 if __name__ == '__main__':

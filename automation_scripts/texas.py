@@ -8,15 +8,16 @@ from pyppeteer import launch
 certification_num = "32083750854"
 
 def output_handle(response):
-    if "no" in response.lower():
-        return "Invalid"
-    else:
+    if "active" in response.lower():
         return "Valid"
+    else:
+        return "Invalid"
 
 async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None,buyer_acc=None,buyer_name=None):
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
-                            handleSIGHUP=False)
+                            handleSIGHUP=False,
+                            headless=True)
     page = await browser.newPage()
     await page.goto('https://mycpa.cpa.state.tx.us/staxpayersearch/')
 
@@ -30,7 +31,7 @@ async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
 
     try: 
         span_id = "label label-success"
-        await page.waitForSelector(f'#{span_id}')
+        await page.waitForSelector(f'#{span_id}',timeout=6000)
         span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
         print(span_content)
     except:

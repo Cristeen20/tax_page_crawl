@@ -7,7 +7,7 @@ from pyppeteer import launch
 certification_num = "000000000"
 
 def output_handle(response):
-    if "verify" in response.lower():
+    if "not" in response.lower():
         return "Invalid"
     else:
         return "Valid"
@@ -18,7 +18,8 @@ async def idaho_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
     
     browser = await launch(handleSIGINT=False,
                             handleSIGTERM=False,
-                            handleSIGHUP=False)
+                            handleSIGHUP=False,
+                            headless=True)
     page = await browser.newPage()
     await page.goto(url)
     print("launch")
