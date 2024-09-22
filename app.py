@@ -31,7 +31,7 @@ automate_function_set = {"maine":maine_automate,
                 "hawai":hawai_automate,
                 "california":california_automate,
                 "illinois":illinois_automate,
-                "missisippi":missisippi_automate,
+                #"missisippi":missisippi_automate,
                 "texas":texas_automate
                 }
 api_function_set = {

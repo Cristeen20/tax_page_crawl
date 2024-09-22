@@ -30,7 +30,7 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         link_class = "Df-1-5"
         await page.waitForSelector(f'#{link_class}')
         await page.click(f'#{link_class}')
-        await asyncio.sleep(3)
+        await asyncio.sleep(2)
 
         #Dd-6
         element_id_type = "Dd-6"
@@ -76,7 +76,6 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
             span_content = await page.evaluate('(element) => element.textContent', await page.querySelector(selector))
             print(span_content)
 
-        
         await browser.close()
 
         res = output_handle(span_content)
@@ -86,8 +85,7 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
 
     
     except Exception as e:
-        return str({"Required values" : "certification_num, account_id",
-                "Error": e})
+        return {"error": e}
 
 
 #asyncio.get_event_loop().run_until_complete(maine_automate(certification_num,account_id))

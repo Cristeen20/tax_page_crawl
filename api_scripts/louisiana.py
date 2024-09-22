@@ -12,9 +12,9 @@ def louisiana_api(certification_num,tax_payer=None,zipcode=None,dba_name=None,ac
         url = "https://www.revenue.louisiana.gov/SalesTax/ResaleCertificate"
         form_data = {
             'SellerAccountNumber': certification_num,#seller_acc
-            'SellerBusinessName': tax_payer,#seller_name
-            'BuyerAccountNumber': buyer_acc,#buyer_acc
-            'BuyerBusinessName': buyer_name #buyer_name
+            'SellerBusinessName': "none",#seller_name
+            'BuyerAccountNumber': certification_num,#buyer_acc
+            'BuyerBusinessName': "none" #buyer_name
         }
 
         response = requests.post(url, data=form_data)
@@ -45,10 +45,7 @@ def louisiana_api(certification_num,tax_payer=None,zipcode=None,dba_name=None,ac
             "error":str(e)
         }
 
-seller_acc="999999999"
-seller_name="hjhjh"
-buyer_acc="8888"
-buyer_name="uuuu"
+
 
 #res = louisiana_api(seller_acc,seller_name,buyer_acc,buyer_name)
 #print(res)
