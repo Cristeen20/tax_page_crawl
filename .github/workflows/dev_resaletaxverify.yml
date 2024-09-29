@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'resaletaxverify'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2A21E196C2634E59B109005E5470AC1D }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5FE34156A43A46E1A0D436A34B23153E }}
