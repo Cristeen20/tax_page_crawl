@@ -45,28 +45,31 @@ def load_app():
 
 @app.route('/api/get_function', methods=['POST'])
 def get_function():
-    print("/api/get_function api being involked.")
-    data = request.json
-
-    state_name = data.get("state_name")
-    certification_num = data.get("certification_num")
-    tax_payer = data.get("tax_payer")
-    zipcode = data.get("zipcode")
-    dba_name = data.get("dba_name")
-    account_id = data.get("account_id")
-    buyer_acc = data.get("buyer_acc")
-    buyer_name = data.get("buyer_name")
-
-
     try:
-        function_name = api_function_set[state_name]
-        res = function_name(certification_num,tax_payer,zipcode,dba_name,account_id,buyer_acc,buyer_name)
-        return res
-    except:
-        function_name = automate_function_set[state_name]
-        asyncio.set_event_loop(asyncio.SelectorEventLoop())
-        res = asyncio.get_event_loop().run_until_complete(function_name(certification_num,tax_payer,zipcode,dba_name,account_id,buyer_acc,buyer_name))
-        return res
+    
+        data = request.json
+
+        state_name = data.get("state_name")
+        certification_num = data.get("certification_num")
+        tax_payer = data.get("tax_payer")
+        zipcode = data.get("zipcode")
+        dba_name = data.get("dba_name")
+        account_id = data.get("account_id")
+        buyer_acc = data.get("buyer_acc")
+        buyer_name = data.get("buyer_name")
+
+
+        try:
+            function_name = api_function_set[state_name]
+            res = function_name(certification_num,tax_payer,zipcode,dba_name,account_id,buyer_acc,buyer_name)
+            return res
+        except:
+            function_name = automate_function_set[state_name]
+            asyncio.set_event_loop(asyncio.SelectorEventLoop())
+            res = asyncio.get_event_loop().run_until_complete(function_name(certification_num,tax_payer,zipcode,dba_name,account_id,buyer_acc,buyer_name))
+            return res
+    except Exception as e:
+        return {"error":str(e)}
 
 # Run the app
 if __name__ == '__main__':
