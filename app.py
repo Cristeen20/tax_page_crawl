@@ -39,9 +39,13 @@ api_function_set = {
                 "louisiana":louisiana_api
                 }
 
+@app.route('/', methods=['POST','GET'])
+def load_app():
+    return "Trigger /api/get_function for resale certificate verification."
+
 @app.route('/api/get_function', methods=['POST'])
 def get_function():
-
+    print("/api/get_function api being involked.")
     data = request.json
 
     state_name = data.get("state_name")
