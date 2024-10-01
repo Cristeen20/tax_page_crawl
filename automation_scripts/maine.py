@@ -16,6 +16,8 @@ def output_handle(response):
 
 async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=None,account_id=None,buyeracc=None,buyer_name=None):
     try:
+        account_id = ""
+        print("in maine function")
         url = 'https://revenue.maine.gov/_/'
 
         browser = await launch(handleSIGINT=False,
@@ -85,7 +87,7 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
 
     
     except Exception as e:
-        return {"error": e}
+        return {"error": str(e)}
 
 
 #asyncio.get_event_loop().run_until_complete(maine_automate(certification_num,account_id))

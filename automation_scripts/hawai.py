@@ -74,7 +74,7 @@ async def hawai_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         }
     
     except Exception as e:
-        return str({"Required values" : "certification_num, tax_payer, dba_name",
-                "error": e})
+        return {"Required values" : "certification_num, tax_payer, dba_name",
+                "error": str(e)}
 
     #asyncio.get_event_loop().run_until_complete(hawai_automate(certification_num,tax_payer,dba_name))

@@ -94,8 +94,8 @@ async def wisconsin_automate(certification_num,tax_payer=None,zipcode=None,dba_n
         }
 
     except Exception as e:
-        return str({"Required values" : "certification_num, tax_payer, zipcode",
-                "error": e})
+        return {"Required values" : "certification_num, tax_payer, zipcode",
+                "error": str(e)}
     
 
 
