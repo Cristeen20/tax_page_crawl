@@ -17,7 +17,12 @@ async def arkansas_automate(certification_num,tax_payer=None,zipcode=None,dba_na
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=True)
+                                headless=True,
+                                args=[
+                                    '--no-sandbox',
+                                    '--disable-setuid-sandbox',
+                                    '--disable-dev-shm-usage', 
+                                ])
         page = await browser.newPage()
         await page.goto(url)
         print("launch")
