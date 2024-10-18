@@ -21,7 +21,7 @@ async def arkansas_automate(certification_num,tax_payer=None,zipcode=None,dba_na
                                 args=[
                                     '--no-sandbox',
                                     '--disable-setuid-sandbox',
-                                    '--disable-dev-shm-usage', 
+                                    '--disable-dev-shm-usage'
                                 ])
         page = await browser.newPage()
         await page.goto(url)
