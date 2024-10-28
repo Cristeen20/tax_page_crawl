@@ -20,7 +20,8 @@ async def california_automate(certification_num,tax_payer=None,zipcode=None,dba_
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=True)
+                                headless=True,
+                                args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto('https://onlineservices.cdtfa.ca.gov/_/#1')
 
@@ -59,7 +60,10 @@ async def california_automate(certification_num,tax_payer=None,zipcode=None,dba_
 
 
         await browser.close()
-        res = output_handle(span_content)
+        if span_content:
+            res = output_handle(span_content)
+        else: raise ValueError("Error in reading certificate status")
+
         return {
                 "result":res
             }
@@ -68,4 +72,3 @@ async def california_automate(certification_num,tax_payer=None,zipcode=None,dba_
     
 
 
-#asyncio.get_event_loop().run_until_complete(california_automate(certification_num))

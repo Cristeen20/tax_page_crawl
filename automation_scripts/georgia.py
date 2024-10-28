@@ -20,7 +20,8 @@ async def georgia_automate(certification_num,tax_payer=None,zipcode=None,dba_nam
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=True)
+                                headless=True,
+                                args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto(url)
         print("launch")
@@ -69,12 +70,12 @@ async def georgia_automate(certification_num,tax_payer=None,zipcode=None,dba_nam
 
 
         await browser.close()
-        res = output_handle(span_content)
+        if span_content:
+            res = output_handle(span_content)
+        else: raise ValueError("Error in reading certificate status")
         return {
                 "result":res
             }
     except Exception as e:
         return {"error":str(e)}
 
-
-#asyncio.get_event_loop().run_until_complete(georgia_automate(certification_num))

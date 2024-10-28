@@ -21,7 +21,8 @@ async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=False)
+                                headless=True,
+                                args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto('https://tap.dor.ms.gov/_/')
         print("launch")
@@ -65,7 +66,9 @@ async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_
         #await page.screenshot({'path': 'example.png'})
 
         await browser.close()
-        res = output_handle(span_content)
+        if span_content:
+            res = output_handle(span_content)
+        else: raise ValueError("Error in reading certificate status")
         return {
                 "result":res
             }

@@ -1,49 +1,47 @@
-# syntax=docker/dockerfile:1
-# Use an official Python runtime as a parent image
-FROM python:3.11-slim-buster
+# Use the official Python image from the Docker Hub
+FROM python:3.11-slim
 
 # Set the working directory in the container
-WORKDIR /python-docker
+WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt requirements.txt
+# Set environment variable for Pyppeteer to skip downloading Chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 # Install dependencies
-RUN apt-get update && \
-    apt-get install -y wget apt-transport-https software-properties-common && \
-    apt-get install -y \
-        ca-certificates \
-        fonts-liberation \
-        libappindicator3-1 \
-        libasound2 \
-        libatk-bridge2.0-0 \
-        libcups2 \
-        libdbus-1-3 \
-        libexpat1 \
-        libgbm1 \
-        libgtk-3-0 \
-        libnspr4 \
-        libnss3 \
-        libx11-xcb1 \
-        libxcomposite1 \
-        libxcursor1 \
-        libxdamage1 \
-        libxrandr2 \
-        xdg-utils \
-        libu2f-udev \
-        libvulkan1 \
-        libxshmfence-dev \
-        libegl1 && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y wget curl gnupg unzip
 
-# Install Python dependencies
-RUN pip3 install -r requirements.txt
+# Manually add Google Chrome repository key
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
+
+# Add Google Chrome repository to sources.list with signed-by option
+
+RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+
+# Install a specific version of Google Chrome (e.g., Chrome 114)
+RUN apt-get update && \
+    apt-get upgrade &&\
+    apt install wget &&\
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &&\
+    apt install -y ./google-chrome-stable_current_amd64.deb
+
+
+# set display port to avoid crash
+ENV DISPLAY=:99
+
+# Copy the requirements.txt file first for better caching
+COPY requirements.txt .
+COPY . /app
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
 COPY . .
 
-# Expose the port the app will run on
-EXPOSE 8181
+# Set the environment variable for Flask
+ENV FLASK_APP=app.py
 
-# Run the application
-CMD [ "python3","app.py", "--host=0.0.0.0"]
+# Expose the port the app runs on
+EXPOSE 5000
+
+# Command to run the application
+CMD ["flask", "run", "--host=0.0.0.0"]

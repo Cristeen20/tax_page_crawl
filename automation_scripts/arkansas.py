@@ -61,14 +61,18 @@ async def arkansas_automate(certification_num,tax_payer=None,zipcode=None,dba_na
         element = await page.querySelector(f'#{button_class}')
 
         
-        span_id = "caption2_Dd-8"
-        await page.waitForSelector(f'#{span_id}')
-        element = await page.querySelector(f'#{span_id}')
+        span_id = "FGLR.FGFR.Visible"
+        await page.waitForSelector(f'.{span_id}')
+        element = await page.querySelector(f'.{span_id}')
         span_content = await page.evaluate('(element) => element.innerText', element)
         print(span_content)
 
         await browser.close()
-        res = output_handle(span_content)
+        
+        if span_content:
+            res = output_handle(span_content)
+        else: raise ValueError("Error in reading certificate status")
+
         return {
                 "result":res
             }

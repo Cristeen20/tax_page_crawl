@@ -19,7 +19,8 @@ async def idaho_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=True)
+                                headless=True,
+                                args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto(url)
         print("launch")
@@ -56,7 +57,9 @@ async def idaho_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         print(span_content)
 
         await browser.close()
-        res = output_handle(span_content)
+        if span_content:
+            res = output_handle(span_content)
+        else: raise ValueError("Error in reading certificate status")
         return {
                 "result":res
             }

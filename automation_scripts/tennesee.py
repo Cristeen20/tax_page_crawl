@@ -3,7 +3,7 @@
 import automation_scripts.config
 import asyncio
 from pyppeteer import launch
-
+import re
 
 certification_num = "000000000"
 
@@ -20,7 +20,8 @@ async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_na
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=True)
+                                headless=True,
+                                args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto(url)
         print("launch")
@@ -50,6 +51,7 @@ async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_na
         a = await page.waitForSelector(f'#{element_id_type}')
         await asyncio.sleep(1)
         await page.click(f'#{element_id_type}')
+        certification_num = re.sub(r'\D', '', certification_num)
         await page.type(f'#{element_id_type}', certification_num)
 
         #action_3
@@ -65,7 +67,9 @@ async def tennesee_automate(certification_num,tax_payer=None,zipcode=None,dba_na
             
 
         await browser.close()
-        res = output_handle(span_content)
+        if span_content:
+            res = output_handle(span_content)
+        else: raise ValueError("Error in reading certificate status")
         return {
                 "result":res
             }

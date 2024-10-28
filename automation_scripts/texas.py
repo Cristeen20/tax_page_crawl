@@ -4,6 +4,7 @@
 import automation_scripts.config
 import asyncio
 from pyppeteer import launch
+import re
 
 certification_num = "32083750854"
 
@@ -18,12 +19,14 @@ async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=True)
+                                headless=False,
+                                args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto('https://mycpa.cpa.state.tx.us/staxpayersearch/')
 
         element_id = "taxpayerId"
         await page.waitForSelector(f'#{element_id}')
+        certification_num = re.sub(r'\D', '', certification_num)
         await page.type(f'#{element_id}', certification_num)
 
         element_id = "btnTaxpayerId"
@@ -48,7 +51,9 @@ async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
 
         
         await browser.close()
-        res = output_handle(span_content)
+        if span_content:
+            res = output_handle(span_content)
+        else: raise ValueError("Error in reading certificate status")
         return {
                 "result":res
             }

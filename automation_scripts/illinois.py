@@ -4,6 +4,7 @@
 import automation_scripts.config
 import asyncio
 from pyppeteer import launch
+import re
 
 certification_num = "00000001"
 
@@ -20,7 +21,8 @@ async def illinois_automate(certification_num,tax_payer=None,zipcode=None,dba_na
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=True)
+                                headless=True,
+                                args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto('https://www.revenue.state.il.us/app/bgii/servlet/BGIInquiry')
         print("launch")
@@ -42,6 +44,7 @@ async def illinois_automate(certification_num,tax_payer=None,zipcode=None,dba_na
         await page.click(f'#{button_class}')
 
         element_id = "Dd-7"
+        certification_num = re.sub(r'\D', '', certification_num)
         await page.waitForSelector(f'#{element_id}')
         await page.type(f'#{element_id}', certification_num)
 
@@ -57,7 +60,9 @@ async def illinois_automate(certification_num,tax_payer=None,zipcode=None,dba_na
 
 
         await browser.close()
-        res = output_handle(span_content)
+        if span_content:
+            res = output_handle(span_content)
+        else: raise ValueError("Error in reading certificate status")
         return {
                 "result":res
             }
