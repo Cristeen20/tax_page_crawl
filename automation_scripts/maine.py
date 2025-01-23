@@ -28,7 +28,7 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         page = await browser.newPage()
         await page.goto(url)
         print("launch")
-        await asyncio.sleep(2)
+        await asyncio.sleep(4)
 
         link_class = "Df-1-6"
         await page.waitForSelector(f'#{link_class}')
@@ -79,7 +79,7 @@ async def maine_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
             # Get the value from the matching <td>
             span_content = await page.evaluate('(element) => element.textContent', await page.querySelector(selector))
             print(span_content)
-
+        
         await browser.close()
 
         if span_content:

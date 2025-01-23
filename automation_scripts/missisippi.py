@@ -21,12 +21,12 @@ async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=True,
+                                headless=False,
                                 args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto('https://tap.dor.ms.gov/_/')
         print("launch")
-        await asyncio.sleep(2)
+        await asyncio.sleep(3)
 
         button_class = "l_Df-1-13"
         await page.waitForSelector(f'#{button_class}')
@@ -62,7 +62,7 @@ async def missisippi_automate(certification_num,tax_payer=None,zipcode=None,dba_
         await page.waitForSelector(f'#{span_id}')
         span_content = await page.evaluate(f'document.querySelector("#{span_id}").innerText')
         print(span_content)
-        await asyncio.sleep(20)
+        #await asyncio.sleep(20)
         #await page.screenshot({'path': 'example.png'})
 
         await browser.close()

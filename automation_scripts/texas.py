@@ -19,7 +19,7 @@ async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=False,
+                                headless=True,
                                 args=['--no-sandbox'])
         page = await browser.newPage()
         await page.goto('https://mycpa.cpa.state.tx.us/staxpayersearch/')
@@ -28,10 +28,23 @@ async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
         await page.waitForSelector(f'#{element_id}')
         certification_num = re.sub(r'\D', '', certification_num)
         await page.type(f'#{element_id}', certification_num)
+        await page.keyboard.press('Enter')
 
-        element_id = "btnTaxpayerId"
-        await page.waitForSelector(f'#{element_id}')
-        await page.click(f'#{element_id}')
+        try:
+            #check type errors
+            error_id = "taxpayerIdError"
+            await page.waitForSelector(f'#{error_id}',timeout=3000)
+            error_content = await page.evaluate(f'document.querySelector("#{error_id}").innerText')
+            if error_content:
+                await browser.close()
+                return {"error":str(error_content)}
+        except:
+            pass
+        
+
+        #element_id = "btnTaxpayerId"
+        #await page.waitForSelector(f'#{element_id}')
+        #await page.click(f'#{element_id}')
 
         try: 
             span_id = "label label-success"
@@ -48,6 +61,7 @@ async def texas_automate(certification_num,tax_payer=None,zipcode=None,dba_name=
                 return span ? span.innerText : null;
             }}''')
             print(span_content) #no response
+        
 
         
         await browser.close()

@@ -17,7 +17,7 @@ async def arkansas_automate(certification_num,tax_payer=None,zipcode=None,dba_na
         browser = await launch(handleSIGINT=False,
                                 handleSIGTERM=False,
                                 handleSIGHUP=False,
-                                headless=True,
+                                headless=False,
                                 args=[
                                     '--no-sandbox',
                                     '--disable-setuid-sandbox',
@@ -66,7 +66,6 @@ async def arkansas_automate(certification_num,tax_payer=None,zipcode=None,dba_na
         element = await page.querySelector(f'.{span_id}')
         span_content = await page.evaluate('(element) => element.innerText', element)
         print(span_content)
-
         await browser.close()
         
         if span_content:
